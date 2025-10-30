@@ -1,0 +1,306 @@
+@ASPNETCoreStatusCodes_HostAddress = http://localhost:5094
+@ApiKey = demo-api-key-12345
+
+#######################################
+# GET REQUESTS
+#######################################
+
+### 200 OK - Get All Users (Success)
+### 429 Too Many Requests - Rate Limit Exceeded (3 times)
+GET {{ASPNETCoreStatusCodes_HostAddress}}/api/users
+Accept: application/json
+X-API-Key: {{ApiKey}}
+
+###
+
+### 200 OK - Get User By ID (Success)
+GET {{ASPNETCoreStatusCodes_HostAddress}}/api/users/1
+Accept: application/json
+X-API-Key: {{ApiKey}}
+
+###
+
+### 400 Bad Request - Invalid User ID (Zero)
+GET {{ASPNETCoreStatusCodes_HostAddress}}/api/users/0
+Accept: application/json
+X-API-Key: {{ApiKey}}
+
+###
+
+### 401 Unauthorized - Missing API Key
+GET {{ASPNETCoreStatusCodes_HostAddress}}/api/users
+Accept: application/json
+
+###
+
+### 404 Not Found - User Does Not Exist
+GET {{ASPNETCoreStatusCodes_HostAddress}}/api/users/999
+Accept: application/json
+X-API-Key: {{ApiKey}}
+
+#######################################
+# POST REQUESTS
+#######################################
+
+### 201 Created - Create User (Success)
+POST {{ASPNETCoreStatusCodes_HostAddress}}/api/users
+Content-Type: application/json
+X-API-Key: {{ApiKey}}
+
+{
+  "email": "newuser@example.com",
+  "firstName": "New",
+  "lastName": "User",
+  "age": 28,
+  "isActive": true
+}
+
+###
+
+### 400 Bad Request - Null User Data
+POST {{ASPNETCoreStatusCodes_HostAddress}}/api/users
+Content-Type: application/json
+X-API-Key: {{ApiKey}}
+
+null
+
+###
+
+### 415 Unsupported Media Type - Empty Body with JSON Content-Type
+POST {{ASPNETCoreStatusCodes_HostAddress}}/api/users
+Content-Type: application/json
+X-API-Key: {{ApiKey}}
+
+###
+
+### 409 Conflict - Duplicate Email
+POST {{ASPNETCoreStatusCodes_HostAddress}}/api/users
+Content-Type: application/json
+X-API-Key: {{ApiKey}}
+
+{
+  "email": "john.doe@example.com",
+  "firstName": "Another",
+  "lastName": "John",
+  "age": 25,
+  "isActive": true
+}
+
+###
+
+### 422 Unprocessable Entity - Missing Required Fields
+POST {{ASPNETCoreStatusCodes_HostAddress}}/api/users
+Content-Type: application/json
+X-API-Key: {{ApiKey}}
+
+{
+  "email": "",
+  "firstName": "",
+  "lastName": "",
+  "age": 0
+}
+
+###
+
+### 415 Unsupported Media Type - Content-Type sould be JSON
+POST {{ASPNETCoreStatusCodes_HostAddress}}/api/users
+Content-Type: text/plain
+X-API-Key: {{ApiKey}}
+
+{
+  "email": "test@example.com",
+  "firstName": "Test",
+  "lastName": "User",
+  "age": 25
+}
+
+#######################################
+# PUT REQUESTS
+#######################################
+
+### 200 OK - Update User (Success)
+PUT {{ASPNETCoreStatusCodes_HostAddress}}/api/users/1
+Content-Type: application/json
+X-API-Key: {{ApiKey}}
+
+{
+  "email": "john.updated@example.com",
+  "firstName": "John",
+  "lastName": "Updated",
+  "age": 35,
+  "isActive": true
+}
+
+###
+
+### 400 Bad Request - Invalid User ID (Negative)
+PUT {{ASPNETCoreStatusCodes_HostAddress}}/api/users/-1
+Content-Type: application/json
+X-API-Key: {{ApiKey}}
+
+{
+  "email": "test@example.com",
+  "firstName": "Test",
+  "lastName": "User",
+  "age": 25,
+  "isActive": true
+}
+
+###
+
+### 404 Not Found - User Does Not Exist
+PUT {{ASPNETCoreStatusCodes_HostAddress}}/api/users/999
+Content-Type: application/json
+X-API-Key: {{ApiKey}}
+
+{
+  "email": "nonexistent@example.com",
+  "firstName": "Non",
+  "lastName": "Existent",
+  "age": 30,
+  "isActive": true
+}
+
+###
+
+### 409 Conflict - Duplicate Email
+PUT {{ASPNETCoreStatusCodes_HostAddress}}/api/users/1
+Content-Type: application/json
+X-API-Key: {{ApiKey}}
+
+{
+  "email": "jane.smith@example.com",
+  "firstName": "John",
+  "lastName": "Doe",
+  "age": 30,
+  "isActive": true
+}
+
+###
+
+### 422 Unprocessable Entity - Validation Errors
+PUT {{ASPNETCoreStatusCodes_HostAddress}}/api/users/1
+Content-Type: application/json
+X-API-Key: {{ApiKey}}
+
+{
+  "email": "invalid-email",
+  "firstName": "",
+  "lastName": "",
+  "age": 10,
+  "isActive": true
+}
+
+###
+
+#######################################
+# PATCH REQUESTS
+#######################################
+
+### 200 OK - Patch User (Success)
+PATCH {{ASPNETCoreStatusCodes_HostAddress}}/api/users/1
+Content-Type: application/json
+X-API-Key: {{ApiKey}}
+
+{
+  "firstName": "Johnny"
+}
+
+###
+
+### 204 No Content - Empty Patch (No meaningful updates)
+PATCH {{ASPNETCoreStatusCodes_HostAddress}}/api/users/1
+Content-Type: application/json
+X-API-Key: {{ApiKey}}
+
+{
+  "email": null,
+  "firstName": null,
+  "lastName": null,
+  "age": null,
+  "isActive": null
+}
+
+###
+
+### 400 Bad Request - Invalid User ID (Zero)
+PATCH {{ASPNETCoreStatusCodes_HostAddress}}/api/users/0
+Content-Type: application/json
+X-API-Key: {{ApiKey}}
+
+{
+  "firstName": "Updated"
+}
+
+###
+
+### 404 Not Found - User Does Not Exist
+PATCH {{ASPNETCoreStatusCodes_HostAddress}}/api/users/999
+Content-Type: application/json
+X-API-Key: {{ApiKey}}
+
+{
+  "firstName": "Updated"
+}
+
+###
+
+### 409 Conflict - Duplicate Email
+PATCH {{ASPNETCoreStatusCodes_HostAddress}}/api/users/1
+Content-Type: application/json
+X-API-Key: {{ApiKey}}
+
+{
+  "email": "jane.smith@example.com"
+}
+
+###
+
+### 422 Unprocessable Entity - Validation Error (Invalid Email)
+PATCH {{ASPNETCoreStatusCodes_HostAddress}}/api/users/1
+Content-Type: application/json
+X-API-Key: {{ApiKey}}
+
+{
+  "email": "invalid-email-format"
+}
+
+#######################################
+# DELETE REQUESTS
+#######################################
+
+### 204 No Content - Delete User (Success) 
+### IsSystemAccount is true
+DELETE {{ASPNETCoreStatusCodes_HostAddress}}/api/users/2
+X-API-Key: {{ApiKey}}
+
+###
+
+### 400 Bad Request - Invalid User ID (Zero)
+DELETE {{ASPNETCoreStatusCodes_HostAddress}}/api/users/0
+X-API-Key: {{ApiKey}}
+
+###
+
+### 403 Forbidden - User 1 IsSystemAccount is false 
+DELETE {{ASPNETCoreStatusCodes_HostAddress}}/api/users/1
+X-API-Key: {{ApiKey}}
+
+###
+
+### 404 Not Found - User Does Not Exist
+DELETE {{ASPNETCoreStatusCodes_HostAddress}}/api/users/999
+X-API-Key: {{ApiKey}}
+
+###
+
+
+
+
+
+
+
+
+
+
+
